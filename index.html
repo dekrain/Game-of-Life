@@ -1,41 +1,40 @@
 <html>
-	<head>
-		<title>A Game of Life!</title>
-		<script src="game-of-life.js"></script>
-		<script>
-		var cnv, game;
-		window.onload = function() {
-			cnv = document.getElementById('game-canvas');
-			game = new window.game.Game(cnv);
+  <head>
+    <title>A Game of Life!</title>
+    <script src="game-of-life.js"></script>
+    <script>
+    var cnv, game;
+    window.onload = function() {
+      cnv = document.getElementById('game-canvas');
+      game = new window.game.Game(cnv);
 
-			window.addEventListener('resize', update);
-			update(true);
-			
-			//game.init();
+      window.addEventListener('resize', update);
+      update(true);
+      
+      //game.init();
 
-			game.runDemo('blinker+glider');
+      game.runDemo('blinker+glider');
 
-			loop();
-		}
+      loop();
+    }
 
-		function loop() {
-			game.step();
-			requestAnimationFrame(loop);
-		}
+    function loop() {
+      game.step();
+      requestAnimationFrame(loop);
+    }
 
-		function update(silently) {
-			
-			if (silently !== true) {
-				game.resize((cnv.width = window.innerWidth) /10,
-						(cnv.height = window.innerHeight) /10);
-				game.draw(true);
-			}
-			else game.init((cnv.width = window.innerWidth) /10,
-						(cnv.height = window.innerHeight) /10);
-		}
-		</script>
-	</head>
-	<body>
-		<canvas id="game-canvas"></canvas>
-	</body>
+    function update(silently) {
+      if (silently !== true) {
+        game.resize((cnv.width = window.innerWidth) /10,
+                    (cnv.height = window.innerHeight) /10);
+        game.draw(true);
+      }
+      else game.init((cnv.width = window.innerWidth) /10,
+                     (cnv.height = window.innerHeight) /10);
+    }
+    </script>
+  </head>
+  <body>
+    <canvas id="game-canvas"></canvas>
+  </body>
 </html>
