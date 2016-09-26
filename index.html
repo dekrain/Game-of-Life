@@ -35,16 +35,16 @@
                      (cnv.height = window.innerHeight) /10, pattern);
     }
 
-	function parseQuery(query) {
-		var result = {};
-		if (!query || query.length < 2) return result;
-		query = decodeURIComponent(query.substr(1));
-		query.split('&').forEach(function(pair){
-			pair = pair.split('=');
-			result[pair[0]] = pair[1];
-		});
-		return result;
-	}
+    function parseQuery(query) {
+      var result = {};
+      if (!query || query.length < 2) return result;
+      query = decodeURIComponent(query.substr(1));
+      query.split('&').forEach(function(pair){
+        pair = pair.split('=');
+        result[pair[0]] = pair[1];
+      });
+      return result;
+  }
     </script>
   </head>
   <body>
