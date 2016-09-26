@@ -54,12 +54,19 @@ nsp.Game = function Game(canvas) {
   };
 
   var safe = { // Safe Access
-    init: function(w, h) {
+    init: function(w, h, pattern) {
       if (!w) w = 500;
       if (!h) h = 250;
+      if (typeof pattern === 'string') {pattern = pattern.split('/').map(function(p){ // '<alive>/<born>'
+        p = p.split('').map(function(n){return parseFloat(n);}); if(p.some(function(n){return !(n < 8 && n > 0);})) throw new TypeError('Invalid pattern!');
+        return p;
+      })} else if (!(pattern instanceof Array && pattern[0] instanceof Array && pattern[1] instanceof Array)) { // != [ [ <alive...> ], [ <born...> ] ]
+        pattern = [[2,3],[3]];
+      }
       o.width = Math.floor(w);
       o.height = Math.floor(h);
       o.board = new Array(o.height);
+      o.pattern = pattern;
       for (var i = 0; i < h; i++) {
         o.board[i] = new Array(o.width);
         for (var j = 0; j < w; j++) {
@@ -87,26 +94,18 @@ nsp.Game = function Game(canvas) {
       for (var y = 0; y < h; y++) {
         for (var x = 0; x < w; x++) {
           if (this.get(x, y)) { // Alive
-            switch (o.logic.active_neighbors_num(x, y)) {
-              case 0:
-              case 1:
-                cpy[y][x] = false; o.update.push(`${x} ${y}`);
-                break;
-              case 2:
-              case 3:
-                break; // Still alive
-              default:
-                cpy[y][x] = false; o.update.push(`${x} ${y}`);
-              }
+            if (o.pattern[0].indexOf(o.logic.active_neighbors_num(x, y)) < 0) {
+              cpy[y][x] = false; o.update.push(`${x} ${y}`);
+            }
           } else { // Dead
-            if (o.logic.active_neighbors_num(x, y) === 3) { // Born me!
+            if (o.pattern[1].indexOf(o.logic.active_neighbors_num(x, y)) > -1) { // Born me!
               cpy[y][x] = true; o.update.push(`${x} ${y}`);
             }
           }
-          }
         }
+      }
 
-        o.board = cpy;
+      o.board = cpy;
     },
     draw: function(silently) {
       /*function random_color() {
