@@ -3,10 +3,12 @@
     <title>A Game of Life!</title>
     <script src="game-of-life.js"></script>
     <script>
-    var cnv, game;
+    var cnv, game, pattern;
     window.onload = function() {
       cnv = document.getElementById('game-canvas');
       game = new window.game.Game(cnv);
+
+      pattern = parseQuery(location.search).pattern || null; // '23/3', default
 
       window.addEventListener('resize', update);
       update(true);
@@ -30,8 +32,19 @@
         game.draw(true);
       }
       else game.init((cnv.width = window.innerWidth) /10,
-                     (cnv.height = window.innerHeight) /10);
+                     (cnv.height = window.innerHeight) /10, pattern);
     }
+
+	function parseQuery(query) {
+		var result = {};
+		if (!query || query.length < 2) return result;
+		query = decodeURIComponent(query.substr(1));
+		query.split('&').forEach(function(pair){
+			pair = pair.split('=');
+			result[pair[0]] = pair[1];
+		});
+		return result;
+	}
     </script>
   </head>
   <body>
