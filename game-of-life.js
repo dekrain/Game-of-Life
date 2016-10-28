@@ -58,7 +58,7 @@ nsp.Game = function Game(canvas) {
       if (!w) w = 500;
       if (!h) h = 250;
       if (typeof pattern === 'string') {pattern = pattern.split('/').map(function(p){ // '<alive>/<born>'
-        p = p.split('').map(function(n){return parseFloat(n);}); if(p.some(function(n){return !(n < 8 && n > 0);})) throw new TypeError('Invalid pattern!');
+        p = p.split('').map(function(n){return parseFloat(n);}); if(p.some(function(n){return !(n <= 8 && n >= 0);})) throw new TypeError('Invalid pattern!');
         return p;
       })} else if (!(pattern instanceof Array && pattern[0] instanceof Array && pattern[1] instanceof Array)) { // != [ [ <alive...> ], [ <born...> ] ]
         pattern = [[2,3],[3]];
